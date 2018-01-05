@@ -21,7 +21,7 @@ class PagesController < ApplicationController
         current_user.raffles.create win: @success
       else
         @success = false
-        @msg     = "You can retry in #{Raffle::SECONDS_DIFF-diff_from_last_attempt} seconds"
+        @msg     = "You can retry in #{Raffle::SECONDS_DIFF - diff_from_last_attempt - 5} seconds"
       end
     else
       @success = false
