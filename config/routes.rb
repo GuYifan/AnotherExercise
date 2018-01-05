@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
-  devise_for :users
+  devise_for :users, :controllers => { :omniauth_callbacks => 'users/omniauth_callbacks' }
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
   root 'pages#home'
 
@@ -15,4 +15,8 @@ Rails.application.routes.draw do
   get '/my_cart'            => 'items#cart'
 
   get '/order'              => 'items#order'
+
+  get '/users/raffle'      => 'pages#raffle'
+
+
 end

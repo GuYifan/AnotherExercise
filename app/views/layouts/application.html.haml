@@ -15,6 +15,9 @@
 
     = stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true
     = javascript_include_tag 'application', 'data-turbolinks-track' => true
+    :javascript
+      window.fbAsyncInit = function(){FB.init({appId:'1756764044342339',xfbml:true,version:'v2.11'});FB.AppEvents.logPageView();};
+      (function(d, s, id){ var js, fjs = d.getElementsByTagName(s)[0];if (d.getElementById(id)) {return;}js = d.createElement(s); js.id = id;js.src = "https://connect.facebook.net/en_US/sdk.js";fjs.parentNode.insertBefore(js, fjs);}(document, 'script', 'facebook-jssdk'));
     = csrf_meta_tags
   %body
     %nav.navbar.navbar-inverse.navbar-fixed-top{role: "navigation"}
@@ -42,12 +45,31 @@
 
             -if current_user
               %li
-                %a{href: "/users/signout"} Logout
+                %a{href: '/users/signout'} Logout
+              %li
+                %a#raffle_request{href: '/users/raffle'} Raffle
+              %li
+                %a#wins_count{href: '#'}
+                  Raffle wins:
+                  %b{style: 'color: red;'}=current_user.wins_count
             -else
               %li
                 %a{href: "/users/sign_in"} Login
               %li
                 %a{href: "/users/sign_up"} Signup
+              %li
+                =link_to 'Login/Signup FB', user_facebook_omniauth_authorize_path
+              %li
+                =link_to 'Login/Signup Gmail', user_google_oauth2_omniauth_authorize_path
+          :javascript
+            $('#wins_count').unbind().click(function(e){e.preventDefault();});
+            $('#raffle_request').unbind().click(function(e){
+              e.preventDefault();
+              $.get('/users/raffle', function(resp){
+                if(resp && resp.success){msg = 'Yay, you win!';}else{msg = resp.msg}
+                alert(msg);
+              });
+            });
     .container
       - flash.each do |name, msg|
         = content_tag :div, class: "alert alert-#{name == :error ? "danger" : "success" } alert-dismissable", role: "alert" do

@@ -56,6 +56,10 @@ end
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 gem 'nokogiri', '~> 1.8.1'
 
+gem 'omniauth-facebook'
+gem 'omniauth'
+gem 'omniauth-google-oauth2'
+
 group :test do
   gem 'launchy'
   gem 'rspec-rails', '~> 3.5.0'
